@@ -1,0 +1,92 @@
+class TreeNode(object):
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+class BST(object):
+    def __init__(self):
+        self.root = None
+
+    def find(self, key):
+        if not self.root:
+            return None
+        else:
+            return self._find(key, self.root)
+
+    def _find(self, key, node):
+        if not node:
+            return None
+        elif key < node.data:
+            return self._find(key, node.left)
+        elif key > node.data:
+            return self._find(key, node.right)
+        else:
+            return True
+
+    def findMin(self):
+        if self.root is None:
+            return None
+        else:
+            return self._findMin(self.root)
+
+    def _findMin(self, node):
+        if node.left:
+            return self._findMin(node.left)
+        else:
+            return node
+
+    def findMax(self):
+        if self.root is None:
+            return None
+        else:
+            return self._findMax(self.root)
+
+    def _findMax(self, node):
+        if node.right:
+            return self._findMax(node.right)
+        else:
+            return node
+
+    def insert(self, key):
+        if not self.root:
+            self.root = TreeNode(key)
+        else:
+            self._insert(key, self.root)
+
+    def _insert(self, key, node):
+        if key < node.data:
+            if node.left == None:
+                node.left = TreeNode(key)
+            else:
+                self._insert(key, node.left)
+        elif key > node.data:
+            if node.right == None:
+                node.right = TreeNode(key)
+            else:
+                self._insert(key, node.right)
+
+    def delete(self,key):
+        if self.root is None:
+            return self.root
+        else:
+            return self._delete(self.root,key)        
+    def _delete(self,root,key):
+        if(root is None): 
+            return root
+        if root.data > key: 
+            root.left = self._delete(root.left, key)
+        elif root.data < key: 
+            root.right= self._delete(root.right, key)
+        else: 
+            if not root.right:
+                return root.left
+            if not root.left:
+                return root.right
+            temp_val = root.right
+            while temp_val.left:
+                temp_val = temp_val.left
+            root.data = temp_val.data       
+            root.right = self._delete(root.right,root.data)
+        return root
